@@ -33,17 +33,26 @@ public class UserEndPoints {
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(payload)
-                .pathParam("username", "userName")
+                .pathParam("username", userName)
                 .when()
                 .put(Routes.updateUrl);
         return response;
     }
 
-    public static Response deleteUser(String userName ,User payload){
+    public static Response deleteUser(String userName ){
         Response response=  given()
-                .pathParam("username", "userName")
+                .pathParam("username", userName)
                 .when()
                 .delete(Routes.deleteUrl);
+        return response;
+    }
+
+    public static Response LoginUser(String username,String password){
+       Response response = given()
+               .queryParam("username",username)
+               .queryParam("password",password)
+               .when()
+               .get(Routes.loginUrl);
         return response;
     }
 

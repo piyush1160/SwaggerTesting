@@ -12,4 +12,6 @@ public class Routes {
      public static String updateUrl = baseUrl+"/user/{username}";
     public static String deleteUrl = baseUrl+"/user/{username}";
 
+
+    public static String loginUrl = "https://petstore.swagger.io/v2/user/login";
 }
