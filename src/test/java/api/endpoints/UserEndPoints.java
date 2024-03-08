@@ -12,7 +12,7 @@ public class UserEndPoints {
    public static Response createUser(User payload){
         Response response=  given()
                  .contentType(ContentType.JSON)
-             //  .accept(ContentType.JSON)
+             .accept(ContentType.JSON)
                .body(payload)
          .when()
                  .post(Routes.postUrl);
@@ -20,9 +20,9 @@ public class UserEndPoints {
      }
 
 
-    public static Response readUser(String userName){
+    public static Response readUser(String username){
         Response response=  given()
-                .pathParam("username", "userName")
+                .pathParam("username", username)
                 .when()
                 .get(Routes.getUrl);
         return response;
