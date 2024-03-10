@@ -91,19 +91,21 @@ public class UserTest {
     @Test(priority = 5)
     public void deleteUserByName(){
 
-        Response response=    UserEndPoints.deleteUser(this.userPayload.getUsername());
+        Response response  =  UserEndPoints.deleteUser(this.userPayload.getUsername());
        // response.then().log().all();
         Assert.assertEquals(response.getStatusCode(),200);
-
     }
 
 
+    @Test(priority = 6)
+    public void logout(){
+
+        Response response = UserEndPoints.logoutUser(this.userPayload.getUsername(),this.userPayload.getPassword());
+         response.then().log().all();
+
+        Assert.assertEquals(response.getStatusCode(),200);
 
 
-
-
-
-
-
+    }
 
 }

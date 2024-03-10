@@ -14,4 +14,5 @@ public class Routes {
 
 
     public static String loginUrl = "https://petstore.swagger.io/v2/user/login";
+    public static String logoutUrl ="https://petstore.swagger.io/v2/user/logout";
 }

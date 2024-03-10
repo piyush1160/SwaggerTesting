@@ -56,4 +56,12 @@ public class UserEndPoints {
         return response;
     }
 
+    public static Response logoutUser(String username , String password){
+//       Response response = given().queryParam("username",username)
+//                .queryParam("password",password)
+        Response response = given().when()
+                .get(Routes.logoutUrl);
+        return response;
+    }
+
 }
