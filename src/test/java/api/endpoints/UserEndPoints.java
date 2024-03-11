@@ -1,8 +1,10 @@
 package api.endpoints;
 
 import api.payloads.User;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
 
@@ -20,6 +22,18 @@ public class UserEndPoints {
      }
 
 
+     public static String userBody(String username){
+        String stringBody = given()
+                .pathParam("username", username)
+                 .when()
+                .get(Routes.getUrl)
+                .then().log().all().extract().body().asString();
+        return stringBody;
+     }
+
+
+
+
     public static Response readUser(String username){
         Response response=  given()
                 .pathParam("username", username)
@@ -27,6 +41,15 @@ public class UserEndPoints {
                 .get(Routes.getUrl);
         return response;
     }
+
+    public static Response readUser(int id){
+        Response response=  given()
+                .pathParam("id", id)
+                .when()
+                .get(Routes.getUrlId);
+        return response;
+    }
+
 
     public static Response updateUser(String userName , User payload){
         Response response=  given()
@@ -53,6 +76,13 @@ public class UserEndPoints {
                .queryParam("password",password)
                .when()
                .get(Routes.loginUrl);
+        return response;
+    }
+    public static Response logoutUser(String username , String password){
+//       Response response = given().queryParam("username",username)
+//                .queryParam("password",password)
+        Response response = given().when()
+                .get(Routes.logoutUrl);
         return response;
     }
 
