@@ -3,6 +3,9 @@ package api.test;
 import api.endpoints.UserEndPoints;
 import api.payloads.User;
 import com.github.javafaker.Faker;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -14,6 +17,11 @@ import org.testng.annotations.Test;
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
+
+
+
+
+// to create allure report 1. need to run all test cases 2. run allure serve /Users/piyushbhatia/Downloads/SwaggerTesting-master/allure-results
 
 public class UserTest {
 
@@ -65,6 +73,7 @@ public class UserTest {
 
 
     @Test(priority = 1)
+    @Description("verify that status code should be 200")
     public void loginUser() {
         Response response = UserEndPoints.LoginUser(this.userPayload.getUsername(), this.userPayload.getPassword());
         //Response response = UserEndPoints.LoginUser(uname,upass);
@@ -78,7 +87,7 @@ public class UserTest {
         Response response = UserEndPoints.createUser(userPayload);
 
         //validate response ..
-        response.then().assertThat().body(matchesJsonSchemaInClasspath("schema.json"));
+        response.then().log().all().assertThat().statusCode(200).body(matchesJsonSchemaInClasspath("schema.json"));
         //String res =
 //      String responseString =  response.then().log().all().extract().asString();
 //            System.out.println(responseString);
@@ -91,6 +100,7 @@ public class UserTest {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.CRITICAL)
     public void validateReqJSONBody(){
         String strBody = UserEndPoints.userBody(this.userPayload.getUsername());
 
@@ -134,6 +144,15 @@ public class UserTest {
         Assert.assertEquals(response.getStatusCode(), 200);
 
     }
+
+    @Test(priority = 5)
+    public void testGetUserByName3() {
+        Response response = UserEndPoints.readUser2(this.userPayload.getUsername(),userPayload);
+        response.then().log().all();
+
+        Assert.assertEquals(response.getStatusCode(), 200);
+
+    }
 //    @Test(priority = 5)
 //    public void testGetUserById() {
 //        Response response = UserEndPoints.readUser(this.userPayload.getId());
@@ -166,8 +185,27 @@ public class UserTest {
     public void deleteUserByName() {
 
         Response response = UserEndPoints.deleteUser(this.userPayload.getUsername());
-        // response.then().log().all();
+        response.then().log().all();
         Assert.assertEquals(response.getStatusCode(), 200);
+
+    }
+    @Test(priority = 8)
+    public void deleteUserByName2() {
+
+        Response response = UserEndPoints.deleteUser("xyz");
+        response.then().log().all();
+        Assert.assertEquals(response.getStatusCode(), 404);
+
+    }
+
+
+    // after deleting user now try to fetch the user detail by their name..
+    @Test(priority = 9)
+    public void testGetUserByName2() {
+        Response response = UserEndPoints.readUser(sendingusername);
+        response.then().log().all();
+
+        Assert.assertEquals(response.getStatusCode(), 404);
 
     }
 
@@ -178,7 +216,7 @@ public class UserTest {
 //    }
 
 
-    @Test(priority = 8)
+    @Test(priority = 10)
     public void logout() {
 
         Response response = UserEndPoints.logoutUser(this.userPayload.getUsername(), this.userPayload.getPassword());

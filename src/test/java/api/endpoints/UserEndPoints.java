@@ -42,6 +42,14 @@ public class UserEndPoints {
         return response;
     }
 
+    public static Response readUser2(String username,User payload){
+        Response response=  given()
+                .pathParam("username", username).body(payload)
+                .when()
+                .get(Routes.getUrl);
+        return response;
+    }
+
     public static Response readUser(int id){
         Response response=  given()
                 .pathParam("id", id)
